@@ -8,10 +8,37 @@
   <body>
     <div id="clock" class="progress-clock">
       <button class="progress-clock__time-date" data-group="d" type="button">
-        <small data-unit="w">Domenica</small><br />
+        <small data-unit="w">Domenica</small><br>
         <span data-unit="mo">Gennaio</span>
         <span data-unit="d">1</span>
       </button>
+      <button class="progress-clock__time-digit" data-unit="h" data-group="h" type="button">12</button><span class="progress-clock__time-colon">:</span><button class="progress-clock__time-digit" data-unit="m" data-group="m" type="button">00</button><span class="progress-clock__time-colon">:</span><button class="progress-clock__time-digit" data-unit="s" data-group="s" type="button">00</button>
+      <span class="progress-clock__time-ampm" data-unit="ap">AM</span>
+      <svg class="progress-clock__rings" width="256" height="256" viewBox="0 0 256 256">
+        <defs>
+          <linearGradient id="pc-red" x1="1" y1="0.5" x2="0" y2="0.5">
+            <stop offset="0%" stop-color="hsl(343,90%,55%)" />
+            <stop offset="100%" stop-color="hsl(323,90%,55%)" />
+          </linearGradient>
+          <linearGradient id="pc-yellow" x1="1" y1="0.5" x2="0" y2="0.5">
+            <stop offset="0%" stop-color="hsl(43,90%,55%)" />
+            <stop offset="100%" stop-color="hsl(23,90%,55%)" />
+          </linearGradient>
+          <linearGradient id="pc-blue" x1="1" y1="0.5" x2="0" y2="0.5">
+            <stop offset="0%" stop-color="hsl(223,90%,55%)" />
+            <stop offset="100%" stop-color="hsl(203,90%,55%)" />
+          </linearGradient>
+          <linearGradient id="pc-purple" x1="1" y1="0.5" x2="0" y2="0.5">
+            <stop offset="0%" stop-color="hsl(283,90%,55%)" />
+            <stop offset="100%" stop-color="hsl(263,90%,55%)" />
+          </linearGradient>
+        </defs>
+        <!-- Giorni del mese-->
+        <g data-units="d">
+            <circle class="progress-clock__ring" cx="128" cy="128" r="74" fill="none" opacity="0.1" stroke="url(#pc-red)" stroke-width="12" />
+            <circle class="progresa_clock__ring_fill">
+         </g>
+      </svg>
     </div>
   </body>
 </html>
