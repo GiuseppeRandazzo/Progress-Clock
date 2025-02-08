@@ -10,7 +10,7 @@ class ProgressClock {
     this.ringTimeouts = [];
     this.update();
   }
-  getDayofWeek(day) {
+  getDayOfWeek(day) {
     switch (day) {
       case 1:
         return "Lunedì";
@@ -21,7 +21,7 @@ class ProgressClock {
       case 4:
         return "Giovedì";
       case 5:
-        return "Veneredì";
+        return "Venerdì";
       case 6:
         return "Sabato";
       default:
@@ -109,6 +109,31 @@ class ProgressClock {
         },
       ];
       // eliminare il timeout
+      this.ringTimeouts.forEach((t) => {
+        clearTimeout(t);
+      });
+      this.ringTimeouts = [];
+
+      // aggiornarmento del display
+      units.forEach((u) => {
+        //anelli
+        const ring = this.el.querySelector(`[data-ring="${u.label}"]`);
+        if (ring) {
+          const strokeDashArray = ring.getAttribute("stroke-dasharray");
+          const fill360 = "progress-Clock__ring-fill--360";
+
+          if (strokeDashArray) {
+            //calcolare la corsa
+            const circumference = +strokeDashArray.split(" ")[0];
+            const strokeDashOffsetPct = 1 - u.progress;
+
+            ring.setAttribute(
+              "stroke-dashoffset",
+              strokeDashOffsetPct * circumference
+            );
+          }
+        }
+      });
     }
   }
 }
