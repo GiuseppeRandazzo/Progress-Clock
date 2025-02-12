@@ -131,9 +131,25 @@ class ProgressClock {
               "stroke-dashoffset",
               strokeDashOffsetPct * circumference
             );
+            //Aggiungere la transizione di dissolvenza, poi rimuoverla
+            if (strokeDashOffsetPct === 1) {
+              ring.classList.add(fill360);
+
+              this.ringTimeouts.push{
+                setTimeout(() => {
+                  ring.classList.remove(fill360);
+                }, 600)
+              }; 
+            }
           }
         }
+        //cifre
+        const unit = this.el.querySelector(`[data-unit="${u.label}"]`);
+        if (unit)
+          unit.innerText = u.value;
       });
     }
-  }
+    clearTimeout(this.updateTimeout);
+    this.updateTimeoput = setTimeout(this.update.bind(this),1e3);
+}
 }
