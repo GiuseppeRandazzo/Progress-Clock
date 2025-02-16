@@ -4,7 +4,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
 class ProgressClock {
   constructor(qs) {
+    if (!qs) throw new Error("Selector is required");
     this.el = document.querySelector(qs);
+    if (!this.el) throw new Error(`Element ${qs} not found`);
     this.time = 0;
     this.updateTimeout = null;
     this.ringTimeouts = [];
@@ -91,7 +93,7 @@ class ProgressClock {
         },
         {
           label: "h",
-          value: hr > 12 ? hr - 12 : hr,
+          value: hr === 0 ? 12 : hr > 12 ? hr - 12 : hr,
           progress: h_progress,
         },
         {
@@ -118,10 +120,9 @@ class ProgressClock {
       units.forEach((u) => {
         //anelli
         const ring = this.el.querySelector(`[data-ring="${u.label}"]`);
+        const fill360 = "progress-clock__ring-fill--360"; // 'c' minuscola
         if (ring) {
           const strokeDashArray = ring.getAttribute("stroke-dasharray");
-          const fill360 = "progress-Clock__ring-fill--360";
-
           if (strokeDashArray) {
             //calcolare la corsa
             const circumference = +strokeDashArray.split(" ")[0];
@@ -135,21 +136,27 @@ class ProgressClock {
             if (strokeDashOffsetPct === 1) {
               ring.classList.add(fill360);
 
-              this.ringTimeouts.push{
+              this.ringTimeouts.push(
                 setTimeout(() => {
                   ring.classList.remove(fill360);
                 }, 600)
-              }; 
+              );
             }
           }
         }
         //cifre
         const unit = this.el.querySelector(`[data-unit="${u.label}"]`);
-        if (unit)
-          unit.innerText = u.value;
+        if (unit) unit.innerText = u.value;
       });
     }
     clearTimeout(this.updateTimeout);
-    this.updateTimeoput = setTimeout(this.update.bind(this),1e3);
-}
+    this.updateTimeout = setTimeout(this.update.bind(this), 1e3);
+  }
+
+  destroy() {
+    clearTimeout(this.updateTimeout);
+    this.ringTimeouts.forEach((timeout) => clearTimeout(timeout));
+    this.ringTimeouts = [];
+    this.el = null;
+  }
 }

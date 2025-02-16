@@ -6,8 +6,8 @@
 }
 :root {
   --hue: 223;
-  --bg: hsl(var(--hue), 10%, 90%);
-  --fg: hsl(var(--hue) 10%, 90%);
+  --bg: hsl(var(--hue), 10%, 10%); /* Impostato direttamente su colore scuro */
+  --fg: hsl(var(--hue), 10%, 90%);
   font-size: calc(16px + (24 - 16) * (100vw - 320px) / (1280 - 320));
 }
 body,
@@ -23,13 +23,24 @@ body {
   place-content: center;
 }
 .progress-clock {
+  display: -ms-grid; /* Fallback per IE */
   display: grid;
+  -ms-grid-columns: 1fr; /* Supporto IE */
+  grid-template-columns: repeat(
+    5,
+    auto
+  ); /*Modificato per allineare meglio i numeri */
+  gap: 0.375rem; /* Aggiunto per il controllo della spaziatura */
   justify-content: center;
   align-items: center;
   position: relative;
   text-align: center;
   width: 16em;
   height: 16em;
+}
+.progress-clock__time-date,
+.progress-clock__time-ampm {
+  grid-column: 1 / -1; /* Modificato per estendersi su tutta la griglia */
 }
 .progress-clock__time-date,
 .progress-clock__time-digit,
@@ -44,10 +55,6 @@ body {
 .progress-clock__time-digit {
   background: transparent;
 }
-.progress-clock__time-date,
-.progress-clock__time-ampm {
-  grid-column: 1 / 6;
-}
 .progress-clock__time-date {
   font-size: 0.75em;
   line-height: 1.33;
@@ -60,6 +67,7 @@ body {
 }
 .progress-clock__time-colon {
   line-height: 1.275;
+  margin: 0 -0.125em; /* Aggiunto per avvicinare i due punti*/
 }
 .progress-clock__time-ampm {
   cursor: default;
@@ -78,9 +86,12 @@ body {
   opacity: 0.1;
 }
 .progress-clock__ring-fill {
+  -webkit-transition: opacity 0s 0.3s linear, stroke-dashoffset 0.3s ease-in-out;
+  -moz-transition: opacity 0s 0.3s linear, stroke-dashoffset 0.3s ease-in-out;
+  -o-transition: opacity 0s 0.3s linear, stroke-dashoffset 0.3s ease-in-out;
   transition: opacity 0s 0.3s linear, stroke-dashoffset 0.3s ease-in-out;
 }
-.progress-clack__ring-fill--360 {
+.progress-clock__ring-fill--360 {
   opacity: 0;
   stroke-dashoffset: 0;
   transition-duration: 0.3s;
@@ -92,22 +103,57 @@ body {
   transition: opacity 0.2s linear;
 }
 [data-group="d"]:focus,
-[datta-group="d"]:hover {
+[data-group="d"]:hover {
   color: hsl(333, 90%, 53%);
 }
 [data-group="h"]:focus,
-[datta-group="h"]:hover {
+[data-group="h"]:hover {
   color: hsl(33, 90%, 55%);
 }
 [data-group="m"]:focus,
-[datta-group="m"]:hover {
+[data-group="m"]:hover {
   color: hsl(213, 90%, 55%);
 }
 [data-group="s"]:focus,
-[datta-group="s"]:hover {
+[data-group="s"]:hover {
   color: hsl(273, 90%, 55%);
 }
 [data-group]:focus ~ .progress-clock__rings [data-units],
 [data-group]:focus ~ .progress-clock__rings [data-units] {
   opacity: 0.2;
+}
+[data-group="d"]:focus ~ .progress-clock__rings [data-units="d"],
+[data-group="d"]:hover ~ .progress-clock__rings [data-units="d"],
+[data-group="h"]:focus ~ .progress-clock__rings [data-units="h"],
+[data-group="h"]:hover ~ .progress-clock__rings [data-units="h"],
+[data-group="m"]:focus ~ .progress-clock__rings [data-units="m"],
+[data-group="m"]:hover ~ .progress-clock__rings [data-units="m"],
+[data-group="s"]:focus ~ .progress-clock__rings [data-units="s"],
+[data-group="s"]:hover ~ .progress-clock__rings [data-units="s"] {
+  opacity: 1;
+}
+
+/* Tema scuro */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: hsl(var(--hue), 10%, 10%);
+    --fg: hsl(var(--hue), 10%, 90%);
+  }
+  .progress-clock__ring {
+    opacity: 0.2;
+  }
+}
+
+/* Aggiungere alla fine del file */
+@media screen and (max-width: 480px) {
+  .progress-clock {
+    width: 12em;
+    height: 12em;
+  }
+
+  .progress-clock__time-digit,
+  .progress-clock__time-colon {
+    font-size: 1.5em;
+  }
 }
